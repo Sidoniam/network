@@ -50,6 +50,14 @@ def handleData():
 def submitVote():
     return render_template('vote.html')
 
+def hashVote(vt):
+    #assuming for this project a constant salt, not secure in the real world
+    salt = b'd00720e889aaff04349a1200a833349c'
+
+    #use pbkdf2 function to provide secure hashing
+    encrypted = pbkdf2_hmac('sha256', vt.encode('utf-8', salt, 10000))
+    return encrypted
+
 @app.route('/vote', methods=['POST'])
 def handleVote():
     vote = request.form.get('vote')
