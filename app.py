@@ -28,6 +28,12 @@ print(users.val())
 print(candidates.val())
 '''
 
+#Example of using the authenticate() function
+'''
+hPass = hashPassword("password123")
+print(authenticate("john_doe01", hPass))
+'''
+
 def hashPassword(pw):
     #assuming for this project a constant salt, not secure in the real world
     salt = b'e82feccefa6ff6521c5c0daf5d225cc5'
@@ -39,7 +45,7 @@ def hashPassword(pw):
 def authenticate(username, password):
     #expects password as bytes string
     user_data = db.child("users").get().val()
-    return username in user_data and bytes.fromhex(user_data[username]['password']) == password
+    return username in user_data and user_data[username]['password'] == bytes.hex(password)
 
 def hashVote(vt):
     #assuming for this project a constant salt, not secure in the real world
