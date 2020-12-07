@@ -28,6 +28,30 @@ print(users.val())
 print(candidates.val())
 '''
 
+
+def hashPassword(pw):
+    #assuming for this project a constant salt, not secure in the real world
+    salt = b'e82feccefa6ff6521c5c0daf5d225cc5'
+    
+    #use pbkdf2 function to provide secure password hashing
+    encrypted = pbkdf2_hmac('sha256', pw.encode('utf-8'), salt, 10000)
+    return encrypted
+
+def authenticate(username, password):
+    pass
+
+def hashVote(vt):
+    #assuming for this project a constant salt, not secure in the real world
+    salt = b'd00720e889aaff04349a1200a833349c'
+
+    #use pbkdf2 function to provide secure hashing
+    encrypted = pbkdf2_hmac('sha256', vt.encode('utf-8', salt, 10000))
+    return encrypted
+
+def voteFor(username, vote):
+    pass
+
+
 app = Flask(__name__)
 app.secret_key = 'secret_key'
 
@@ -50,26 +74,10 @@ def handleData():
 def submitVote():
     return render_template('vote.html')
 
-def hashVote(vt):
-    #assuming for this project a constant salt, not secure in the real world
-    salt = b'd00720e889aaff04349a1200a833349c'
-
-    #use pbkdf2 function to provide secure hashing
-    encrypted = pbkdf2_hmac('sha256', vt.encode('utf-8', salt, 10000))
-    return encrypted
-
 @app.route('/vote', methods=['POST'])
 def handleVote():
     vote = request.form.get('vote')
     username = session['username']
-    # vote(hashVote(vote), username)
+    # voteFor(username, hashVote(vote))
     # session.clear()
     return "{0} voted for: {1}".format(username, vote)
-
-def hashPassword(pw):
-    #assuming for this project a constant salt, not secure in the real world
-    salt = b'e82feccefa6ff6521c5c0daf5d225cc5'
-    
-    #use pbkdf2 function to provide secure password hashing
-    encrypted = pbkdf2_hmac('sha256', pw.encode('utf-8'), salt, 10000)
-    return encrypted
