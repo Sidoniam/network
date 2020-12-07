@@ -1,4 +1,4 @@
-#from flask import Flask, render_template, request, url_for, redirect, session
+from flask import Flask, render_template, request, url_for, redirect, session
 import pyrebase
 from hashlib import pbkdf2_hmac
 
@@ -37,8 +37,9 @@ def hashPassword(pw):
     return encrypted
 
 def authenticate(username, password):
+    #expects password as bytes string
     user_data = db.child("users").get().val()
-    return username in user_data and user_data[username]['password'] == password
+    return username in user_data and bytes.fromhex(user_data[username]['password']) == password
 
 def hashVote(vt):
     #assuming for this project a constant salt, not secure in the real world
@@ -61,8 +62,8 @@ def voteFor(username, vote):
     #Increment the vote count of the chosen candidate
     numVotes = db.child("candidates").child(vote).get().val()['numVotes']
     newVoteCount = {"numVotes": (numVotes + 1)}
-    db.child("candidates").child(vote).set(newVoteCount)
-    return True
+    db.child("candidates").child(vote).update(newVoteCount)
+    return True 
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
