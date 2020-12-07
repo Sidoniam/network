@@ -24,7 +24,7 @@ def submitVote():
 @app.route('/vote', methods=['POST'])
 def handleVote():
     vote = request.form.get('vote')
-    # vote(hashVote(vote), session['username'])
+    username = session['username']
+    # vote(hashVote(vote), username)
     # session.clear()
-    return "{0} voted for: {1}".format(session['username'], vote)
-    
+    return "{0} voted for: {1}".format(username, vote)
