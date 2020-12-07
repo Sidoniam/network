@@ -39,7 +39,7 @@ def hashPassword(pw):
 
 def authenticate(username, password):
     user_data = db.child("users").get().val()
-    return username in user_data and user_data['username']['password'] == password
+    return username in user_data and user_data[username]['password'] == password
 
 def hashVote(vt):
     #assuming for this project a constant salt, not secure in the real world
