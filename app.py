@@ -1,5 +1,32 @@
 from flask import Flask, render_template, request, url_for, redirect, session
+import pyrebase
 from hashlib import pbkdf2_hmac
+
+#see https://github.com/thisbejim/Pyrebase for pybase api
+config = {
+    "apiKey": "AIzaSyClQ-JVkX6calAWG9HQwIpJqUYKgrIEhcU",
+    "authDomain": "digital-voting-project.firebaseapp.com",
+    "databaseURL": "https://digital-voting-project-default-rtdb.firebaseio.com",
+    "storageBucket": "digital-voting-project.appspot.com",
+}
+
+firebase = pyrebase.initialize_app(config)
+db = firebase.database()
+
+#Obtaining the data, and setting the vote count example
+'''
+admins = db.child("admins").get()
+users = db.child("users").get()
+candidates = db.child("candidates").get()
+
+data = {"numVotes": "0"}
+db.child("candidates").child("Donald Trump").set(data)
+db.child("candidates").child("Joe Biden").set(data)
+
+print(admins.val())
+print(users.val())
+print(candidates.val())
+'''
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
