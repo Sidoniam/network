@@ -38,7 +38,8 @@ def hashPassword(pw):
     return encrypted
 
 def authenticate(username, password):
-    pass
+    user_data = db.child("users").get()[username]
+    return user_data['password'] == password
 
 def hashVote(vt):
     #assuming for this project a constant salt, not secure in the real world
@@ -64,11 +65,11 @@ def handleData():
     username = request.form.get('username')
     password = request.form.get('password')
     password = hashPassword(password)
-    # if(authenticate(username, password)):
-    session['username'] = username
-    return redirect(url_for('submitVote'))
-    # else:
-    #    return "Invalid Credentials. Refresh the page and try again!"
+    if(authenticate(username, password)):
+        session['username'] = username
+        return redirect(url_for('submitVote'))
+    else:
+       return "Invalid Credentials. Refresh the page and try again!"
 
 @app.route('/vote')
 def submitVote():
