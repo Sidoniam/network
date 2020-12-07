@@ -38,15 +38,15 @@ def hashPassword(pw):
     return encrypted
 
 def authenticate(username, password):
-    user_data = db.child("users").get()[username]
-    return user_data['password'] == password
+    user_data = db.child("users").get().val()
+    return username in user_data and user_data['username']['password'] == password
 
 def hashVote(vt):
     #assuming for this project a constant salt, not secure in the real world
     salt = b'd00720e889aaff04349a1200a833349c'
 
     #use pbkdf2 function to provide secure hashing
-    encrypted = pbkdf2_hmac('sha256', vt.encode('utf-8', salt, 10000))
+    encrypted = pbkdf2_hmac('sha256', vt.encode('utf-8'), salt, 10000)
     return encrypted
 
 def voteFor(username, vote):
