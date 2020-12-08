@@ -62,7 +62,7 @@ def voteFor(username, vote):
         return False
 
     #update the users vote selection data
-    selectionData = {"vote": vote}
+    selectionData = {"vote": bytes.hex(hashVote(vote))}
     db.child("users").child(username).update(selectionData)
 
     #Increment the vote count of the chosen candidate
