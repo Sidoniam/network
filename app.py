@@ -97,6 +97,10 @@ def submitVote():
 def handleVote():
     vote = request.form.get('vote')
     username = session['username']
+    if voteFor(username, vote):
+        return "{0} voted for: {1}".format(username, vote)
+    else:
+        return "{0} already voted.".format(username, vote)
     # voteFor(username, hashVote(vote))
-    # session.clear()
+    session.clear()
     return "{0} voted for: {1}".format(username, vote)
